@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Contracts
+namespace Services
 {
-    public interface IDataSeading
+    public class AssemblyReference
     {
-        Task DataSeedAsync();
+
     }
 }
