@@ -1,7 +1,9 @@
 ﻿using Domain.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Services_Abstraction.Contracts;
+using Shared;
 using Shared.DTOS;
+using Shared.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +17,8 @@ namespace Presentation.Controllers
     public class ProductsController(IServiceManger _serviceManger): ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductResultDto>>> GetAllProductsAsync()
-        => Ok(await _serviceManger.ProductService.GetAllProductsAsync());
+        public async Task<ActionResult<IEnumerable<ProductResultDto>>> GetAllProductsAsync([FromQuery]ProductSpecificationsParameters parameters)
+        => Ok(await _serviceManger.ProductService.GetAllProductsAsync(parameters));   
         [HttpGet("brands")]
         public async Task<ActionResult<IEnumerable<BrandResultDto>>> GetAllBrandsAsync()
             => Ok( await _serviceManger.ProductService.GetAllBrandsAsync());
