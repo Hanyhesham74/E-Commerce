@@ -1,4 +1,6 @@
-﻿using Shared.DTOS;
+﻿using Shared;
+using Shared.DTOS;
+using Shared.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,7 @@ namespace Domain.Contracts
 {
     public interface IProductService
     {
-        Task<IEnumerable<ProductResultDto>>GetAllProductsAsync();
+        Task<IEnumerable<ProductResultDto>>GetAllProductsAsync(ProductSpecificationsParameters parameters);  
         Task<IEnumerable<BrandResultDto>>GetAllBrandsAsync();
         Task<IEnumerable<TypeResultDto>>GetAllTypesAsync();
         Task<ProductResultDto> GetProductById(int id);
