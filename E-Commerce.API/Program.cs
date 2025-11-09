@@ -1,5 +1,8 @@
 
 using Domain.Contracts;
+using E_Commerce.API.Factories;
+using E_Commerce.API.Middlewares;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Presistence.Data;
 using Presistence.Repositories;
@@ -23,6 +26,10 @@ namespace E_Commerce.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = ApiResponceFactory.CustomValidationErrorResponse;
+            });
             builder.Services.AddDbContext<StoreDbContext>(options =>
             {
                 // options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -39,6 +46,7 @@ namespace E_Commerce.API
             var objectofdataseading = scope.ServiceProvider.GetRequiredService<IDataSeading>();
            await objectofdataseading.DataSeedAsync();
             // Configure the HTTP request pipeline.
+            app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
