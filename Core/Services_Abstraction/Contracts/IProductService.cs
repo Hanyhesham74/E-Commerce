@@ -12,7 +12,7 @@ namespace Domain.Contracts
 {
     public interface IProductService
     {
-        Task<IEnumerable<ProductResultDto>>GetAllProductsAsync(ProductSpecificationsParameters parameters);  
+        Task<PaginatedResult<ProductResultDto>>GetAllProductsAsync(ProductSpecificationsParameters parameters);  
         Task<IEnumerable<BrandResultDto>>GetAllBrandsAsync();
         Task<IEnumerable<TypeResultDto>>GetAllTypesAsync();
         Task<ProductResultDto> GetProductById(int id);

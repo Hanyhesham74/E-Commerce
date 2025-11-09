@@ -17,8 +17,8 @@ namespace Presentation.Controllers
     public class ProductsController(IServiceManger _serviceManger): ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductResultDto>>> GetAllProductsAsync([FromQuery]ProductSpecificationsParameters parameters)
-        => Ok(await _serviceManger.ProductService.GetAllProductsAsync(parameters));   
+        public async Task<ActionResult<PaginatedResult<ProductResultDto>>> GetAllProductsAsync([FromQuery]ProductSpecificationsParameters parameters)
+        => Ok(await _serviceManger.ProductService.GetAllProductsAsync(parameters));    
         [HttpGet("brands")]
         public async Task<ActionResult<IEnumerable<BrandResultDto>>> GetAllBrandsAsync()
             => Ok( await _serviceManger.ProductService.GetAllBrandsAsync());

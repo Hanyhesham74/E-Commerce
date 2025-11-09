@@ -12,7 +12,7 @@ namespace Services.Specifications
     internal class ProductWithBrandAndTypeSpecifications: BaseSpecifications<Product, int>
     {
         public ProductWithBrandAndTypeSpecifications(ProductSpecificationsParameters parameters)
-            : base(p=>(!parameters.TypeId.HasValue || p.TypeId==parameters.TypeId)&&(!parameters.BrandId.HasValue || p.BrandId==parameters.BrandId))
+            : base(p=>(!parameters.TypeId.HasValue || p.TypeId==parameters.TypeId)&&(!parameters.BrandId.HasValue || p.BrandId==parameters.BrandId)&&(string.IsNullOrEmpty(parameters.Search)||p.Name.ToLower().Contains(parameters.Search.ToLower())))
         {
             AddInclude(p => p.productBrand);
             AddInclude(p => p.productType);
@@ -35,6 +35,8 @@ namespace Services.Specifications
                 default:
                     break;
             }
+
+            ApplyPagination(parameters.PageSize, parameters.PageIndex);
         }
 
         public ProductWithBrandAndTypeSpecifications(int id) : base(p => p.Id == id)
