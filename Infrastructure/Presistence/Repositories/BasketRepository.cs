@@ -16,8 +16,8 @@ namespace Presistence.Repositories
         public async Task<CustomerBasket?> CreateOrUpdateBasketAsync(CustomerBasket Basket, TimeSpan? timeToLive = null)
         {
             var jesonBasket=JsonSerializer.Serialize(Basket);
-            var result=await _database.StringSetAsync(Basket.Id, jesonBasket,timeToLive?? TimeSpan.FromDays(30));
-            return result ? await GetBasketById(Basket.Id ): null;   
+            var result=await _database.StringSetAsync(Basket.Id.ToString(), jesonBasket,timeToLive?? TimeSpan.FromDays(30));
+            return result ? await GetBasketById(Basket.Id.ToString() ): null;    
         }
 
         public async Task<bool> DeleteBasketAsync(string id)
