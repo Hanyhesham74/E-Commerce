@@ -1,5 +1,6 @@
 
 using Domain.Contracts;
+using E_Commerce.API.Extensions;
 using E_Commerce.API.Factories;
 using E_Commerce.API.Middlewares;
 using Microsoft.AspNetCore.Mvc;
@@ -22,35 +23,21 @@ namespace E_Commerce.API
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-            builder.Services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.InvalidModelStateResponseFactory = ApiResponceFactory.CustomValidationErrorResponse;
-            });
-            builder.Services.AddDbContext<StoreDbContext>(options =>
-            {
-                // options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            });
-            builder.Services.AddScoped<IDataSeading, DataSeading>();
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddAutoMapper(cfg => { }, typeof(AssemblyReference).Assembly);
-            builder.Services.AddScoped<IServiceManger, ServiceManger>();
+            //webapiservices
+            builder.Services.AddWebApiServices();
+            //InfrastructureServices
+            builder.Services.AddInfrastructureServices(builder.Configuration); 
+            //core services
+            builder.Services.AddCoreServices(); 
             //Add-Migration "IntialCreate" -OutputDir Data\Migrations
             var app = builder.Build();
 
-           using var scope = app.Services.CreateScope();
-            var objectofdataseading = scope.ServiceProvider.GetRequiredService<IDataSeading>();
-           await objectofdataseading.DataSeedAsync();
+            await app.SeedDatabaseAsync();
             // Configure the HTTP request pipeline.
-            app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+           app.UseExceptionHandlingMiddlewares();
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerMiddlewares();
             }
 
             app.UseHttpsRedirection();
