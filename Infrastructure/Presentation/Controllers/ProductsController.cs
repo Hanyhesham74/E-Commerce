@@ -14,10 +14,9 @@ using System.Threading.Tasks;
 
 namespace Presentation.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ProductsController(IServiceManger _serviceManger): ControllerBase
-    {
+  
+    public class ProductsController(IServiceManger _serviceManger): ApiController 
+    { 
         [HttpGet]
         public async Task<ActionResult<PaginatedResult<ProductResultDto>>> GetAllProductsAsync([FromQuery]ProductSpecificationsParameters parameters)
         => Ok(await _serviceManger.ProductService.GetAllProductsAsync(parameters));    
@@ -28,9 +27,7 @@ namespace Presentation.Controllers
         public async Task<ActionResult<IEnumerable<TypeResultDto>>> GetAllTypesAsync()
             => Ok( await _serviceManger.ProductService.GetAllTypesAsync());
         [ProducesResponseType(typeof(ProductResultDto),StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType(typeof(ProductResultDto), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ProductResultDto), StatusCodes.Status400BadRequest)]
+       
         [HttpGet("{id:int}")]
         public async Task<ActionResult<ProductResultDto>> GetProductById(int id)
             => Ok( await _serviceManger.ProductService.GetProductById(id));
